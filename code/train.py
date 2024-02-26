@@ -10,7 +10,9 @@ np.random.seed(0)
 
 
 train_path = Path(r"code/raw_data/spectrogram_train")
+train_path = Path(r"/Users/justinmao/Documents/GitHub/composer-classifier/raw_data/spectrogram_train/")
 test_path = Path(r"code/raw_data/spectrogram_test")
+test_path = Path(r"/Users/justinmao/Documents/GitHub/composer-classifier/raw_data/spectrogram_test/")
 
 train_files = listdir(train_path)
 test_files = listdir(test_path)
