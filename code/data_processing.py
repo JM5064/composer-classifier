@@ -6,9 +6,7 @@ from os import listdir
 from os.path import join
 
 train_path = Path(r"code/raw_data/audio/musicnet/train_data/")
-train_path = Path(r"/Users/justinmao/Documents/GitHub/composer-classifier/raw_data/audio/musicnet/train_data")
 test_path = Path(r"code/raw_data/audio/musicnet/test_data/")
-test_path = Path(r"/Users/justinmao/Documents/GitHub/composer-classifier/raw_data/audio/musicnet/test_data")
 train_files = listdir(train_path)
 test_files = listdir(test_path)
 
@@ -41,8 +39,20 @@ def create_spectrograms(source_path, files):
     print("Done Converting!")
 
 
+# 0 - Schubert
+# 1 - Mozart
+# 2 - Dvorak
+# 3 - Cambini
+# 4 - Haydn
+# 5 - Brahms
+# 6 - Faure
+# 7 - Ravel
+# 8 - Bach
+# 9 - Beethoven
+
 # Create the labels for composers
-def create_labels(source_path, files, output_file_name):
+def create_labels(files, output_file_name):
+
     f = open("/Users/justinmao/Documents/GitHub/composer-classifier/raw_data/" + output_file_name, "a")
 
     for filename in files:
@@ -78,8 +88,8 @@ def create_labels(source_path, files, output_file_name):
     f.close()
 
 
-# create_labels(train_path, train_files, "train_labels.txt")
-# create_labels(test_path, test_files, "test_labels.txt")
+# create_labels(train_files, "train_labels.txt")
+# create_labels(test_files, "test_labels.txt")
 # create_spectrograms(train_path, train_files)
 # create_spectrograms(test_path, test_files)
 
