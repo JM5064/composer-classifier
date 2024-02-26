@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# recordings
+/raw_data/audio/musicnet
+
 # Distribution / packaging
 .Python
 build/
