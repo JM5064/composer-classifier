@@ -2,6 +2,7 @@ from pathlib import Path
 from os import listdir
 from os.path import join
 import torch
+import torch.nn as nn
 import numpy as np
 import cnn
 
@@ -20,6 +21,16 @@ test_files = listdir(test_path)
 train_loader = torch.utils.data.DataLoader(train_files, batch_size=4, shuffle=True)
 test_loader = torch.utils.data.DataLoader(test_files, batch_size=4, shuffle=True)
 # add validation set
-
-
 # 320 train, 10 test
+
+
+# learning rate values to try
+lr_values = {0.01, 0.1}
+# number of iterations
+num_epochs = 2
+
+# define loss function
+loss = nn.CrossEntropyLoss()
+
+
+
