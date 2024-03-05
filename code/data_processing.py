@@ -53,7 +53,7 @@ def create_spectrograms(source_path, files):
 # Create the labels for composers
 def create_labels(files, output_file_name):
 
-    f = open("/Users/justinmao/Documents/GitHub/composer-classifier/raw_data/" + output_file_name, "a")
+    f = open("code/raw_data/" + output_file_name, "a")
 
     for filename in files:
         file_number = int(filename[:4])
@@ -72,7 +72,7 @@ def create_labels(files, output_file_name):
             composer = 5    # brahms
         elif 2166 <= file_number <= 2169:
             composer = 6    # faure
-        elif 2177 <= file_number <= 2180:
+        elif 2177 <= file_number <= 2180 or 2802 <= file_number <= 2808:    # no ravel in test?
             composer = 7    # ravel
         elif 2186 <= file_number <= 2310:
             composer = 8    # bach
