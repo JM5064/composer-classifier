@@ -8,6 +8,10 @@ __pycache__/
 
 # recordings
 /raw_data/audio/musicnet
+/raw_data/split_spectrogram_train
+/raw_data/split_spectrogram_test
+
+.idea/sonarlint/
 
 # Distribution / packaging
 .Python
