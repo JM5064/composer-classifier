@@ -7,12 +7,18 @@ from os.path import join
 import soundfile as sf
 import random
 
-train_path = Path(r"code/raw_data/audio/musicnet/split_train_data/")
-train_path = Path(r"/Users/justinmao/Documents/GitHub/composer-classifier/raw_data/audio/musicnet/train_data/")
-test_path = Path(r"code/raw_data/audio/musicnet/split_test_data/")
-test_path = Path(r"/Users/justinmao/Documents/GitHub/composer-classifier/raw_data/audio/musicnet/test_data/")
+train_path = Path(r"raw_data/audio/musicnet/train_data/")
 train_files = listdir(train_path)
+
+split_train_path = Path(r"raw_data/audio/musicnet/split_train_data/")
+split_train_files = listdir(split_train_path)
+
+test_path = Path(r"raw_data/audio/musicnet/test_data/")
 test_files = listdir(test_path)
+
+split_test_path = Path(r"raw_data/audio/musicnet/split_test_data/")
+split_test_files = listdir(split_test_path)
+
 
 random.seed(0)
 
@@ -32,7 +38,7 @@ def split_wav_files(files, source_path, destination_path, split_duration):
 
         # +1 for unexplainable reasons
         start = begin * sample_rate + 1
-        print(file[0:4])
+        print(file[0:4], begin, start)
 
         # create splits
         for i in range(num_splits):
@@ -46,36 +52,37 @@ def split_wav_files(files, source_path, destination_path, split_duration):
             start += sample_rate * split_duration
 
 
-def create_spectrograms(source_path, files):
+def create_spectrograms(source_path, files, destination_path):
     for filename in files:
-        print(f"Converting {filename} now")
+        if filename.endswith(".wav"):
+            print(f"Converting {filename} now")
 
-        # create melspectrogram
-        y, sr = librosa.load(join(source_path, filename))
-        S = librosa.feature.melspectrogram(y=y, sr=sr)
-        S_dB = librosa.power_to_db(S, ref=np.max)
+            # create melspectrogram
+            y, sr = librosa.load(join(source_path, filename))
+            S = librosa.feature.melspectrogram(y=y, sr=sr)
+            S_dB = librosa.power_to_db(S, ref=np.max)
 
-        # create image
-        fig, ax = plt.subplots()
-        img = librosa.display.specshow(S_dB, x_axis='time', y_axis='mel', sr=sr, fmax=8000, ax=ax)
-        # turn off axis and remove padding
-        ax.axis('off')
-        plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
+            # create image
+            fig, ax = plt.subplots()
+            img = librosa.display.specshow(S_dB, x_axis='time', y_axis='mel', sr=sr, fmax=8000, ax=ax)
+            # turn off axis and remove padding
+            ax.axis('off')
+            plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
 
-        # save into folder
-        filename_parts = filename.split(".")
-        # output_name = "code/raw_data/spectrogram/" + filename_parts[0] + ".png"
-        output_name = "/Users/justinmao/Documents/GitHub/composer-classifier/raw_data/split_spectrogram_test1/" + filename_parts[0] + ".png"
+            # save into folder
+            filename_parts = filename.split(".")
+            output_name = destination_path + "/" + filename_parts[0] + ".png"
 
-        fig.savefig(output_name)
-        plt.close()
+            fig.savefig(output_name)
+            plt.close()
 
     print("Done Converting!")
 
 
-# split_wav_files(test_files, test_path, "composer-classifier/raw_data/audio/musicnet/split_test_data", 30)
-split_wav_files(test_files, test_path, "/Users/justinmao/Documents/GitHub/composer-classifier/raw_data/audio/musicnet/split_test_data1", 30)
-# create_labels(train_files, "train_labels.txt")
-# create_labels(test_files, "test_labels.txt")
-# create_spectrograms(train_path, train_files)
-# create_spectrograms(test_path, test_files)
+# UNCOMMENT THESE TO CREATE DATA
+
+# split_wav_files(train_files, train_path, "raw_data/audio/musicnet/split_train_data", 30)
+# split_wav_files(test_files, test_path, "raw_data/audio/musicnet/split_test_data", 30)
+
+# create_spectrograms(split_train_path, split_train_files, "raw_data/split_spectrogram_train")
+# create_spectrograms(split_test_path, split_test_files, "raw_data/split_spectrogram_test")
