@@ -4,6 +4,7 @@ from pathlib import Path
 import numpy as np
 from os import listdir
 from os.path import join
+from os import rename
 import soundfile as sf
 import random
 
@@ -79,10 +80,33 @@ def create_spectrograms(source_path, files, destination_path):
     print("Done Converting!")
 
 
+def get_validation_spectrograms():
+    train_spectrograms_path = Path(r'raw_data/split_spectrogram_train/')
+    train_spectrograms_files = listdir(train_spectrograms_path)
+
+    validation_spectrogram_path = Path(r'raw_data/split_spectrogram_validation/')
+
+    frequency = 0
+    for filename in train_spectrograms_files:
+        # take every 20th file from train data and move into validation set
+        # maybe not the best way to make validation set
+        if frequency % 20 == 0:
+            # move file to validation folder
+            destination_file = join(validation_spectrogram_path, filename)
+            rename(str(train_spectrograms_path) + "/" + filename, destination_file)
+
+        frequency += 1
+
+
 # UNCOMMENT THESE TO CREATE DATA
 
+# # Run these two to split the .wav files into 30 second segments
 # split_wav_files(train_files, train_path, "raw_data/audio/musicnet/split_train_data", 30)
 # split_wav_files(test_files, test_path, "raw_data/audio/musicnet/split_test_data", 30)
-
+#
+# # Run these two to convert the split .wav files into spectrograms
 # create_spectrograms(split_train_path, split_train_files, "raw_data/split_spectrogram_train")
 # create_spectrograms(split_test_path, split_test_files, "raw_data/split_spectrogram_test")
+#
+# # Run to create validation set from train data
+# get_validation_spectrograms()

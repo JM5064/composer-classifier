@@ -10,6 +10,7 @@ __pycache__/
 /raw_data/audio/musicnet
 /raw_data/split_spectrogram_train
 /raw_data/split_spectrogram_test
+/raw_data/split_spectrogram_validation
 
 .idea/sonarlint/
 
