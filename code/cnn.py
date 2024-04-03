@@ -6,13 +6,13 @@ import numpy as np
 
 class CNN(nn.Module):
 
-    def __init__(self, num_channels, classes):
+    def __init__(self, num_channels):
         super(CNN, self).__init__()
 
         self.conv1 = nn.Conv2d(in_channels=num_channels, out_channels=20, kernel_size=3, padding="same")
-        self.conv2 = nn.Conv2d(in_channels=5, out_channels=10, kernel_size=3, padding="same")
-        self.conv3 = nn.Conv2d(in_channels=10, out_channels=20, kernel_size=3, padding="same")
-        self.linear = nn.Linear(180, 10)
+        self.conv2 = nn.Conv2d(in_channels=20, out_channels=15, kernel_size=3, padding="same")
+        self.conv3 = nn.Conv2d(in_channels=15, out_channels=10, kernel_size=3, padding="same")
+        self.linear = nn.Linear(48000, 10)
 
     def forward(self, x):
         x = self.conv1(x)
