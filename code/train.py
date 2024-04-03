@@ -85,7 +85,7 @@ for lr in lr_values:
 
             check_validation += 1
 
-            if check_validation % 5 == 0:
+            if check_validation % 50 == 0:
                 with torch.no_grad():
                     validation_loss = 0
                     validation_accuracy = 0
@@ -102,11 +102,35 @@ for lr in lr_values:
                     validation_accuracy = validation_accuracy / len(validation_loader)
                     validation_loss = validation_loss / len(validation_loader)
 
-                    metrics[lr]["losses"].append(validation_loss)
                     metrics[lr]["accuracies"].append(validation_accuracy)
+                    metrics[lr]["losses"].append(validation_loss)
 
-                    print(f"LR = {lr} --- EPOCH = {epoch} --- ROUND = {check_validation}")
+                    print(f"LR = {lr} --- EPOCH = {epoch} --- BATCH = {check_validation}")
                     print(f"Validation loss = {validation_loss} --- Validation accuracy = {validation_accuracy}")
+
+    with torch.no_grad():
+        test_loss = 0
+        test_accuracy = 0
+
+        for X_test, y_test in test_loader:
+            X_test = X_test.to(device)
+            y_test = y_test.to(device)
+
+            y_hat = model(X_test)
+
+            test_accuracy += accuracy(y_hat, y_test)
+            test_loss += loss_function(y_hat, y_test)
+
+        test_accuracy = test_accuracy / len(test_loader)
+        test_loss = test_loss / len(test_loader)
+
+        metrics[lr]["accuracies"].append(test_accuracy)
+        metrics[lr]["losses"].append(test_loss)
+
+        print(f"LR = {lr} --- Test loss = {test_loss} --- Test accuracy = {test_accuracy}")
+
+        torch.save(model, "code/model" + str(lr) + ".pth")
+
 
 
 
