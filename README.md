@@ -5,7 +5,7 @@ Final project for McGill AI Society Intro to ML Bootcamp (Winter 2024)
 Training data retreived from [Kaggle](https://www.kaggle.com/datasets/imsparsh/musicnet-dataset).
 
 ## Project Overview
-We used [librosa](https://librosa.org/) to turn the audio files into mel-spectrograms. We used a 6 layers of Convoltuional Blocks that consists of a Conv2D with relu Activation, MaxPooling2D and a Dropout layer. It is followed by a flatten, dropout and dense layer with softmax activation. 
+We used [librosa](https://librosa.org/) to turn the audio files into mel-spectrograms. We used 6 layers of Convoltuional Blocks that consists of a Conv2D with relu Activation, MaxPooling2D and a Dropout layer. It is followed by a flatten, dropout and dense layer with softmax activation. 
 
 To evaluate the model, we used K-Fold Cross-Validation Technique to help increase generalizability of the model on unseen dataset. We also used F1_score to see the effectiveness of the model on classification and Balanced Accuracy Score  to see how effective it is with a skewed dataset.
 
