@@ -93,16 +93,6 @@ model.add(layers.Conv2D(128, (3,3), activation = 'relu'))
 model.add(layers.MaxPooling2D((2,2)))
 model.add(layers.Dropout(0.2))
 
-#Layer 5
-model.add(layers.Conv2D(256, (3,3), activation = 'relu'))
-model.add(layers.MaxPooling2D((2,2)))
-model.add(layers.Dropout(0.2))
-
-#Layer 6
-model.add(layers.Conv2D(512, (3,3), activation = 'relu'))
-model.add(layers.MaxPooling2D((2,2)))
-model.add(layers.Dropout(0.2))
-
 
 model.add(layers.Flatten())
 model.add(layers.Dense(256))
@@ -111,39 +101,18 @@ model.add(layers.Dense(128))
 model.add(layers.Dense(10, activation='softmax'))
 
 #model.summary()
-callback = keras.callbacks.EarlyStopping(monitor="val_loss", patience=5)
-
-opt = keras.optimizers.SGD(learning_rate=0.0001)
 
 model.compile(loss='categorical_crossentropy',
-              optimizer=opt,
+              optimizer='sgd',
               metrics=["accuracy"])
 
-kf = KFold(n_splits=5, shuffle=True, random_state=1) 
 
-scores = []
-for train_index, test_index in kf.split(train_images):
-    print("Train:", train_index, "Validation:",test_index)
-    X_train, X_test = train_images[train_index], train_images[test_index] 
-    y_train, y_test = train_labels[train_index], train_labels[test_index]
-
-    history = model.fit(X_train, y_train,
-            batch_size=batch_size,
-            epochs=epochs,
-            shuffle=True,
-            callbacks=[callback],
-            validation_split=0.20,
-            verbose=1)
-    
-    y_pred = model.predict(X_test)
-    y_pred_bool = np.argmax(y_pred, axis=1)
-    y_test_bool = np.argmax(y_test, axis=1)
-    fold_score = balanced_accuracy_score(y_test_bool, y_pred_bool)
-    
-    scores.append(fold_score)
-    
-mean_accuracy = sum(scores)/len(scores)
-
+history = model.fit(train_images, train_labels,
+        batch_size=batch_size,
+        epochs=epochs,
+        shuffle=True,
+        validation_split=0.20,
+        verbose=1)
 
 plt.plot(history.history['accuracy'])
 plt.plot(history.history['val_accuracy'])
@@ -168,6 +137,4 @@ y_pred_bool = np.argmax(y_pred, axis=1)
 bas = balanced_accuracy_score(test_uncoded_labels, y_pred_bool)
 
 print(classification_report(test_uncoded_labels, y_pred_bool, target_names=target_labels, zero_division=0))
-print("K-Fold Cross-Validation Scores:", scores)
-print("Mean Accuracy:", mean_accuracy)
 print(f"Balanced Accuracy Score: {bas}\n")
