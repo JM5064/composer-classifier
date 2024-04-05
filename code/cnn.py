@@ -14,6 +14,7 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import balanced_accuracy_score
 from sklearn.model_selection import KFold, cross_val_score
 
+# ----------- CONVERTING IMAGES INTO ARRAYS -----------
 
 train_path = Path(r"raw_data/audio/train/")
 train_files = os.listdir(train_path)
@@ -47,8 +48,8 @@ train_images = np.array(train_images_list)
 train_images = train_images.astype('float32') / 255
 train_labels = to_categorical(train_uncoded_labels)
 
-print(train_images.shape)
-print(train_labels.shape)
+#print(train_images.shape)
+#print(train_labels.shape)
 
 for spec in test_files:
     audio_full_name = os.path.basename(spec)
@@ -65,8 +66,10 @@ test_images = np.array(test_images_list)
 test_images = test_images.astype('float32') / 255
 test_labels = to_categorical(test_uncoded_labels)
 
-print(test_images.shape)
-print(test_labels.shape)
+#print(test_images.shape)
+#print(test_labels.shape)
+
+# ----------- CREATING CNN MODEL -----------
 
 batch_size = 32
 epochs = 50
@@ -111,6 +114,9 @@ model.add(layers.Dense(128))
 model.add(layers.Dense(10, activation='softmax'))
 
 #model.summary()
+
+# ----------- RUNNING THE MODEL -----------
+
 callback = keras.callbacks.EarlyStopping(monitor="val_loss", patience=5)
 
 opt = keras.optimizers.SGD(learning_rate=0.0001)
@@ -144,6 +150,7 @@ for train_index, test_index in kf.split(train_images):
     
 mean_accuracy = sum(scores)/len(scores)
 
+# ----------- PLOTTING TRAINING DATA -----------
 
 plt.plot(history.history['accuracy'])
 plt.plot(history.history['val_accuracy'])
@@ -161,6 +168,8 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'val'], loc='upper left')
 plt.savefig("model_loss.png")
+
+# ----------- CALCULATING MATRICIES -----------
 
 target_labels = ["Schubert","Mozart","Dvorak","Cambini","Haydn","Brahms","Faure","Ravel","Bach","Beethoven"]
 y_pred = model.predict(test_images)
